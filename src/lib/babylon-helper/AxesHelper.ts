@@ -1,4 +1,4 @@
-import { Color3, LinesMesh, MeshBuilder, Vector3, Scene } from 'babylonjs'
+import { Color3, LinesMesh, MeshBuilder, Vector3, Scene } from '@babylonjs/core'
 export class AxesHelper {
     axisX: LinesMesh
     axisY: LinesMesh

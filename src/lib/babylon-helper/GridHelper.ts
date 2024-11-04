@@ -1,5 +1,5 @@
-
-import { Color3, GroundMesh, MeshBuilder, Scene } from 'babylonjs'
+// @ts-nocheck
+import { Color3, GroundMesh, MeshBuilder, Scene } from '@babylonjs/core'
 import { GridMaterial } from 'babylonjs-materials';
 
 export class GridHelper {

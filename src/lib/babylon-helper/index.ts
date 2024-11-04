@@ -1,5 +1,5 @@
-import { Engine, Scene, MeshBuilder, StandardMaterial, Texture, CubeTexture, Color3 } from 'babylonjs'
-// import { Inspector } from '@babylonjs/inspector';
+import { Engine, Scene, MeshBuilder, StandardMaterial, Texture, CubeTexture, Color3 } from '@babylonjs/core'
+import { Inspector } from '@babylonjs/inspector';
 import { AxesHelper } from "./AxesHelper";
 import { GridHelper } from "./GridHelper";
 
@@ -8,12 +8,13 @@ export function CreateScene(CanvasEl: HTMLCanvasElement) {
     const engine = new Engine(CanvasEl);
     const scene = new Scene(engine); // 创建一个场景scene
 
-    // debuger 模式
-    // Inspector.Show(scene, {});
-    scene.debugLayer.show({
-        showExplorer: true,
-        showInspector: true,
-    })
+    // TODO debuger 模式 
+    Inspector.Show(scene, {});
+    // 影响 GridMaterial 的显示
+    // scene.debugLayer.show({
+    //     showExplorer: true,
+    //     showInspector: true,
+    // })
 
     const axesHelper = new AxesHelper(200, 200, 200, scene);
     const gridHelper = new GridHelper(400, 400, scene);
