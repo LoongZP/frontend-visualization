@@ -48,5 +48,6 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
             // 一会的鼠标监听事件就写在这里
             console.log('模型已加载', meshes);
         }
+        
     )
 }
