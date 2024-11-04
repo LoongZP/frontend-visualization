@@ -9,7 +9,10 @@ export function CreateScene(CanvasEl: HTMLCanvasElement) {
     const scene = new Scene(engine); // 创建一个场景scene
 
     // TODO debuger 模式 
-    Inspector.Show(scene, {});
+    Inspector.Show(scene, {
+        showExplorer: true,
+        showInspector: true,
+    });
     // 影响 GridMaterial 的显示
     // scene.debugLayer.show({
     //     showExplorer: true,

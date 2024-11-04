@@ -13,8 +13,7 @@ import {
 import { FBXLoader } from "../../lib/babylonjs-fbx-loader-master"
 // @ts-ignore
 SceneLoader.RegisterPlugin(new FBXLoader())
-import { CreateScene } from '../../lib/babylon-helper'
-
+import { CreateScene } from '../../lib/babylon-helper';
 
 export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
     const scene = CreateScene(CanvasEl)
@@ -57,7 +56,7 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
     // sphere.setVerticesData(VertexBuffer.ColorKind, sphereColors);
 
     var box = MeshBuilder.CreateBox("box", { size: 10 }, scene);
-    box.position = new Vector3(17, 35, 6);
+    box.position = new Vector3(17, 13, 6);
     box.useVertexColors = true;
     let boxVertCount = box.getTotalVertices();
     let boxColors = []
@@ -79,23 +78,23 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
     SceneLoader.ImportMesh(
         '', // 要导入的特定网格的名称，空字符串表示导入所有网格
         "/static/mbabylon/models/animation/",// 模型文件的路径
-        "house.fbx", // 模型文件的名称
+        "house_new.fbx", // 模型文件的名称
         scene, // 要将模型导入到的目标场景
         function (meshes) { // 回调函数，处理加载完成后的操作
             // meshs是模型中的所有网格，是模型的基本组成后续要实现各种交互需要了解。
-            meshes.forEach(mesh => {
-                if (mesh.name == "__root__")
-                    return
-                let position = mesh.position
-                // position.x+=1
-                position.x = position.x / 100
-                position.y = position.y / 100
-                position.z = position.z / 100
-                let scaling = mesh.scaling
-                scaling.x = scaling.x / 100
-                scaling.y = scaling.y / 100
-                scaling.z = scaling.z / 100
-            })
+            // meshes.forEach(mesh => {
+            //     if (mesh.name == "__root__")
+            //         return
+            //     let position = mesh.position
+            //     // position.x+=1
+            //     position.x = position.x / 100
+            //     position.y = position.y / 100
+            //     position.z = position.z / 100
+            //     let scaling = mesh.scaling
+            //     scaling.x = scaling.x / 100
+            //     scaling.y = scaling.y / 100
+            //     scaling.z = scaling.z / 100
+            // })
 
             // let position = meshes[0].position
             // position.x+=1
@@ -116,9 +115,9 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
 
                 // let position = Vector3.TransformCoordinates(mesh.position, meshes[0].getWorldMatrix());
                 // let scaling = Vector3.TransformCoordinates(mesh.scaling, meshes[0].getWorldMatrix());
-                
-                const intersects1 = mesh.getBoundingInfo().boundingBox.intersectsMinMax(box.getBoundingInfo().boundingBox.minimum,box.getBoundingInfo().boundingBox.maximum);
-                const intersects2 = box.getBoundingInfo().boundingBox.intersectsMinMax(mesh.getBoundingInfo().boundingBox.minimum,mesh.getBoundingInfo().boundingBox.maximum);
+
+                const intersects1 = mesh.getBoundingInfo().boundingBox.intersectsMinMax(box.getBoundingInfo().boundingBox.minimum, box.getBoundingInfo().boundingBox.maximum);
+                const intersects2 = box.getBoundingInfo().boundingBox.intersectsMinMax(mesh.getBoundingInfo().boundingBox.minimum, mesh.getBoundingInfo().boundingBox.maximum);
                 if (!intersects1 && !intersects2) {
                     let news = mesh.clone()
                     news.parent = rootMesh
@@ -165,7 +164,7 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
                 newMesh.parent = rootMesh
                 // newMesh.position = position;
                 // newMesh.scaling = scaling;
-                newMesh.position.z = 150
+                newMesh.position.z = 40
                 // mesh.visibility = 0;
             })
         }

@@ -22,8 +22,9 @@ onMounted(() => {
   justify-content: center;
   /* background-color: black; */
 }
+
 #renderCanvas {
-  width: 1080px;
+  width: 920px;
   height: 700px;
 }
 </style>
