@@ -86,13 +86,14 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
                 //     return
                 // }
 
-                let boxCSG = CSG.FromMesh(box,true);
-                let meshCSG = CSG.FromMesh(mesh, true);
+                // 不能改变顺序，否则会影响 结果mesh的法线的方向、新subMesh的位置
+                let meshCSG = CSG.FromMesh(mesh);
+                let boxCSG = CSG.FromMesh(box);
+
+
                 let meshCSGtoVertexData=meshCSG.toVertexData()
                 let boxCSGtoVertexData = boxCSG.toVertexData()
                 
-
-
                 let booleanCSG = meshCSG.subtract(boxCSG);
                 let newMesh = booleanCSG.toMesh(mesh.name + "1", mesh.material, scene, true);
        
@@ -103,16 +104,16 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
                 })
 
                 let subMeshes2 = newMesh.subMeshes
-                // subMeshes2.forEach((subMesh) => {
-                //     console.log(subMesh.getMaterial());
-                // })
-                let tmp=subMeshes2[subMeshes2.length-1].materialIndex
-                for (let i = subMeshes2.length - 1; i > 0;i--){
-                    subMeshes2[i].materialIndex=subMeshes2[i-1].materialIndex
-                    console.log(subMeshes2[i].getMaterial());
-                }
-                subMeshes2[0].materialIndex = tmp
-                console.log(subMeshes2[0].getMaterial());
+                subMeshes2.forEach((subMesh) => {
+                    console.log(subMesh.getMaterial());
+                })
+                // let tmp=subMeshes2[subMeshes2.length-1].materialIndex
+                // for (let i = subMeshes2.length - 1; i > 0;i--){
+                //     subMeshes2[i].materialIndex=subMeshes2[i-1].materialIndex
+                //     console.log(subMeshes2[i].getMaterial());
+                // }
+                // subMeshes2[0].materialIndex = tmp
+                // console.log(subMeshes2[0].getMaterial());
 
 
 
