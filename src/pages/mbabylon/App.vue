@@ -24,7 +24,7 @@ onMounted(() => {
 }
 
 #renderCanvas {
-  width: 920px;
+  width: 1080px;
   height: 700px;
 }
 </style>
