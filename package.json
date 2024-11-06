@@ -24,6 +24,7 @@
     "frontend-visualization": "file:",
     "js-base64": "^3.7.7",
     "lil-gui": "^0.19.2",
+    "manifold-3d": "^2.5.1",
     "pinia": "^2.2.2",
     "qs": "^6.13.0",
     "rollup-plugin-node-polyfills": "^0.2.1",

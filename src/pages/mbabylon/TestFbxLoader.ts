@@ -11,6 +11,13 @@ import {
     VertexData,
     Nullable
 } from "@babylonjs/core"
+
+import Module from 'manifold-3d';
+
+
+
+
+
 // import 'babylonjs-loaders';
 import { FBXLoader } from "../../lib/babylonjs-fbx-loader-master"
 // @ts-ignore
@@ -44,144 +51,70 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
     // TODO
     await InitializeCSG2Async();
 
-    var box = MeshBuilder.CreateBox("box", { size: 10 }, scene);
-    box.position = new Vector3(17, 13, 6);
+    var box = MeshBuilder.CreateBox("box", { size: 1 }, scene);
+    box.position = new Vector3(1, 1, 0);
     box.useVertexColors = true;
     let boxVertCount = box.getTotalVertices();
     let boxColors = []
     for (let i = 0; i < boxVertCount; i++) {
-        boxColors.push(1, 0, 0, 0);
+        boxColors.push(0, 0, 1, 0);
     }
     box.setVerticesData(VertexBuffer.ColorKind, boxColors);
 
 
 
+    const wasm = await Module();
+
+
     SceneLoader.ImportMesh(
         '', // 要导入的特定网格的名称，空字符串表示导入所有网格
         "/static/mbabylon/models/animation/",// 模型文件的路径
-        "house_wlm.fbx", // 模型文件的名称
+        "single.fbx", // 模型文件的名称
         scene, // 要将模型导入到的目标场景
         //  回调函数，处理加载完成后的操作 
         function (meshes) { //meshs是模型中的所有网格，是模型的基本组成后续要实现各种交互需要了解。
-            let rootMesh: Nullable<Mesh>=null
+            // let rootMesh: Nullable<Mesh>=null
             meshes.forEach(mesh => {
                 if (!(mesh instanceof Mesh))
                     return
                 if (mesh.name == "__root__") {
-                    rootMesh=new Mesh("__root__1", scene)
+                    // rootMesh=new Mesh("__root__1", scene)
                     return
                 }
-                //@ts-ignore
 
-                // let position = Vector3.TransformCoordinates(mesh.position, meshes[0].getWorldMatrix());
-                // let scaling = Vector3.TransformCoordinates(mesh.scaling, meshes[0].getWorldMatrix());
-
-                // const intersects1 = mesh.getBoundingInfo().boundingBox.intersectsMinMax(box.getBoundingInfo().boundingBox.minimum, box.getBoundingInfo().boundingBox.maximum);
-                // const intersects2 = box.getBoundingInfo().boundingBox.intersectsMinMax(mesh.getBoundingInfo().boundingBox.minimum, mesh.getBoundingInfo().boundingBox.maximum);
-                
-                // if (mesh.name == "2") {
-                //     let news = mesh.clone()
-                //     news.parent = rootMesh
-                //     news.position.z = 40
-                //     return
-                // }
-
-                // 不能改变顺序，否则会影响 结果mesh的法线的方向、新subMesh的位置
-                let meshCSG = CSG.FromMesh(mesh);
-                let boxCSG = CSG.FromMesh(box);
+                let vertexData1 = new VertexData()
+                vertexData1.positions = mesh.getVerticesData(VertexBuffer.PositionKind)
+                // vertexData1.colors=mesh.getVerticesData(VertexBuffer.ColorKind)
+                vertexData1.indices = mesh.getIndices()
+                let meshCSG = CSG.FromVertexData(vertexData1)
+                meshCSG.position = mesh.position.clone()
+                meshCSG.position.x += 10
+                // meshCSG.rotation=mesh.rotation.clone()
+                // meshCSG.rotationQuaternion=mesh.rotationQuaternion!.clone()
+                meshCSG.scaling = mesh.scaling.clone()
+                // meshCSG.matrix = mesh.getWorldMatrix().clone()
 
 
-                let meshCSGtoVertexData=meshCSG.toVertexData()
-                let boxCSGtoVertexData = boxCSG.toVertexData()
-                
+
+
+                let vertexData2 = new VertexData()
+                vertexData2.positions = box.getVerticesData(VertexBuffer.PositionKind)
+                vertexData2.colors = box.getVerticesData(VertexBuffer.ColorKind)
+                vertexData2.indices = box.getIndices()
+
+                let boxCSG = CSG.FromMesh(box)
+                boxCSG.position = box.position.clone()
+                boxCSG.position.x += 12
+                boxCSG.scaling = box.scaling.clone()
+                boxCSG.matrix=box.getWorldMatrix().clone()
+
+
+
                 let booleanCSG = meshCSG.subtract(boxCSG);
-                let newMesh = booleanCSG.toMesh(mesh.name + "1", mesh.material, scene, true);
-       
-
-                let subMeshes1 = mesh.subMeshes
-                subMeshes1.forEach((subMesh) => {
-                    console.log(subMesh.getMaterial());
-                })
-
-                let subMeshes2 = newMesh.subMeshes
-                subMeshes2.forEach((subMesh) => {
-                    console.log(subMesh.getMaterial());
-                })
-                // let tmp=subMeshes2[subMeshes2.length-1].materialIndex
-                // for (let i = subMeshes2.length - 1; i > 0;i--){
-                //     subMeshes2[i].materialIndex=subMeshes2[i-1].materialIndex
-                //     console.log(subMeshes2[i].getMaterial());
-                // }
-                // subMeshes2[0].materialIndex = tmp
-                // console.log(subMeshes2[0].getMaterial());
-
-
-
-
-                let subMaterial1 = mesh.material?.subMaterials!
-                let subMaterial2 = newMesh.material?.subMaterials!
-                
-
-
-                let vDataKind = mesh.getVerticesDataKinds()
-                let vData:any={}
-                vDataKind.forEach((kind) => {
-                    vData[kind]=mesh.getVerticesData(kind)
-                })
-                // 删除 cut 带来的顶点颜色
-                newMesh.geometry?.removeVerticesData("color")
-                let newvDataKind = newMesh.getVerticesDataKinds()
-                let newvData:any={}
-                newvDataKind.forEach((kind) => {
-                    newvData[kind]=newMesh.getVerticesData(kind)
-                })
-
-
-
-                if(rootMesh)
-                    newMesh.parent = rootMesh
-                newMesh.position.z = 40
-  
+                let newMesh = booleanCSG.toMesh(mesh.name + "1", null, scene, true);
+                newMesh.removeVerticesData(VertexBuffer.ColorKind)
             })
         }
     )
     return scene;
 }
-
-// function isT(mesh1: Mesh, mesh2: Mesh) {
-//     let box1 = mesh1.getBoundingInfo().boundingBox
-//     let box1W = box1.vectors.map((local) => {
-//         return Vector3.TransformCoordinates(local, box1.getWorldMatrix());
-//     })
-//     let box12d=box1W.forEach()
-//     let box2 = mesh2.getBoundingInfo().boundingBox
-//     let box2W = box2.vectors.map((local) => {
-//         return Vector3.TransformCoordinates(local, box1.getWorldMatrix());
-//     })
-//     for (const v of box1W) {
-//         const flag = pointInPolygon({
-//             x: v.x,
-//             y: v.x,
-//         }, points);
-//         if (flag) return true;
-//     }
-//     for (const v of boundingBoxPoints) {
-//         const flag = pointInPolygon({
-//             x: v.x,
-//             x: v.x,
-//         }, points);
-//         if (flag) return true;
-//     }
-// }
-
-// export type Point2D = { x: number, y: number };
-// export type Line2D = [Point2D, Point2D];
-// export type Polygon2D = Point2D[];
-// export const isPointInPolygon = (point: Point2D, polygon: Polygon2D) => {
-//     let inRange = false;
-//     for (let i = -1, l = polygon.length, j = l - 1; ++i < l; j = i)
-//       ((polygon[i].y <= point.y && point.y < polygon[j].y) || (polygon[j].y <= point.y && point.y < polygon[i].y))
-//         && (point.x < (polygon[j].x - polygon[i].x) * (point.y - polygon[i].y) / (polygon[j].y - polygon[i].y) + polygon[i].x)
-//         && (inRange = !inRange);
-//     return inRange;
-//   };
