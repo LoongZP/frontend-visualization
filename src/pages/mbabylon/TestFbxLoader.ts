@@ -92,7 +92,7 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
                 
                 let manifold_mesh = vertexData2mesh(vertexData1)
                 let meshManifold = Manifold.ofMesh(manifold_mesh)
-                
+                meshManifold.calculateNormals(2,0)
 
 
                 
@@ -131,8 +131,8 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
 
 
                 let resultManifold = meshManifold.subtract(mesh2Manifold);
-                let resultManifoldMesh = resultManifold.getMesh()
-                resultManifoldMesh.merge()
+                let resultManifoldMesh = resultManifold.getMesh([0, 0, 1])
+                // resultManifoldMesh.merge()
                 let resultVertexData = mesh2vertexData(resultManifoldMesh)
                 let resultMesh = new Mesh("result",scene);
                 resultVertexData.applyToMesh(resultMesh)
