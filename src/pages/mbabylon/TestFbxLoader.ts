@@ -3,6 +3,7 @@ import {
     MeshBuilder,
     VertexBuffer,
     CSG,
+    CSG2,
     Mesh,
     Matrix,
     Color3,
@@ -13,6 +14,11 @@ import {
 // TODO
 // await InitializeCSG2Async(); 
 
+// import Module,{Mesh as Manifold3dMeshType} from 'manifold-3d';
+// const wasm = await Module();
+// wasm.setup();
+// const { Manifold, Mesh: Manifold3dMesh } = wasm;
+
 
 // import 'babylonjs-loaders';
 import { FBXLoader } from "../../lib/babylonjs-fbx-loader-master"
@@ -21,13 +27,7 @@ SceneLoader.RegisterPlugin(new FBXLoader())
 import { CreateScene } from '../../lib/babylon-helper';
 
 
-// import Module,{Mesh as Manifold3dMeshType} from 'manifold-3d';
-// const wasm = await Module();
-// wasm.setup();
-// const { Manifold, Mesh: Manifold3dMesh } = wasm;
-
-
-import jscad from "@jscad/modeling"
+import initOpenCascade, { TopoDS_Shape } from "./opencascade.js/dist/index.js";
 
 export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
     const scene = CreateScene(CanvasEl)
@@ -51,24 +51,83 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
         scene);
     light.intensity = 5;  //调整平行光的强度
 
-    const { intersect, subtract } = jscad.booleans
-    const { colorize } = jscad.colors
-    const { cube, sphere } = jscad.primitives
 
-    const outer = subtract(
-        cube({ size: 10 }),
-        sphere({ radius: 6.8 })
-    )
-    const inner = intersect(
-        sphere({ radius: 4 }),
-        cube({ size: 7 })
-    )
-
-    colorize([0.65, 0.25, 0.8], outer);
-    colorize([0.7, 0.7, 0.1], inner);
+    let oc = await initOpenCascade()
+    const sphere = new oc.BRepPrimAPI_MakeSphere_1(1);
+    // Take shape and subtract a translated and scaled sphere from it
+    const makeCut = (shape: TopoDS_Shape, translation: [number, number, number], scale: number) => {
+        const tf = new oc.gp_Trsf_1();
+        tf.SetTranslation_1(new oc.gp_Vec_4(translation[0], translation[1], translation[2]));
+        tf.SetScaleFactor(scale);
+        const loc = new oc.TopLoc_Location_2(tf);
+    
+        const cut = new oc.BRepAlgoAPI_Cut_3(shape, sphere.Shape().Moved(loc, false), new oc.Message_ProgressRange_1());
+        cut.Build(new oc.Message_ProgressRange_1());
+    
+        return cut.Shape();
+    };
+    
+    // Let's make some cuts
+    const cut1 = makeCut(sphere.Shape(), [0, 0, 0.7], 1);
+    const cut2 = makeCut(cut1, [0, 0, -0.7], 1);
+    const cut3 = makeCut(cut2, [0, 0.25, 1.75], 1.825);
+    const cut4 = makeCut(cut3, [4.8, 0, 0], 5);
+    
+    // Rotate around the Z axis
+    const makeRotation = (rotation: number) => {
+        const tf = new oc.gp_Trsf_1();
+        tf.SetRotation_1(new oc.gp_Ax1_2(new oc.gp_Pnt_1(), new oc.gp_Dir_4(0, 0, 1)), rotation);
+        const loc = new oc.TopLoc_Location_2(tf);
+        return loc;
+    };
+    
+    // Combine the result
+    const fuse = new oc.BRepAlgoAPI_Fuse_3(cut4, cut4.Moved(makeRotation(Math.PI), false), new oc.Message_ProgressRange_1());
+    fuse.Build(new oc.Message_ProgressRange_1());
+    const result = fuse.Shape().Moved(makeRotation(-30 * Math.PI / 180), false);
 
 
     
+
+
+
+
+
+    
+    // // Make 2 meshes..
+    // let geometry1 = new THREE.BufferGeometry();
+    
+    // let positions = new Float32Array(verticesData1.positions);
+    // geometry1.attributes.position = new THREE.BufferAttribute(positions, 3);
+ 
+    // let indices = new Uint16Array(verticesData1.indices);
+    // geometry1.index = new THREE.BufferAttribute(indices, 1);
+    // let n:number[] = []
+    // for (let i = 0; i < positions.length;i+=3){
+    //     n.push(0,0,1)
+    // }
+    // let normals=new Uint16Array(n)
+    // geometry1.setAttribute('normal',new THREE.BufferAttribute(normals, 3));
+
+
+    // const house = new THREE.Mesh(geometry1,new THREE.MeshNormalMaterial());
+    // house.updateMatrix();
+
+    // const box = new THREE.Mesh(
+    //     new THREE.BoxGeometry(2, 2, 2),
+    //     new THREE.MeshNormalMaterial()
+    // );
+    // // Make sure the .matrix of each mesh is current
+    // box.updateMatrix();
+
+    // // Perform CSG operations
+    // // The result is a THREE.Mesh that you can add to your scene...
+    // console.time('计时器');
+    // const subRes = threeCGS.subtract(house, box);
+    // // const uniRes = threeCGS.union(box, sphere);
+    // // const intRes = threeCGS.intersect(box, sphere);
+    // // 结束计时
+    // console.timeEnd('计时器');
 
     
 
@@ -95,7 +154,6 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
     //                 // rootMesh=new Mesh("__root__1", scene)
     //                 return
     //             }
-
 
     //             let vertexData1 = new VertexData()
     //             let oldPositions1=mesh.getVerticesData(VertexBuffer.PositionKind)!
