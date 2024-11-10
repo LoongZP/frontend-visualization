@@ -10,15 +10,15 @@ import { NodePolyFillsPlugin } from './plugins/NodePolyFillsPlugin'
 import { nodePolyfills } from 'vite-plugin-node-polyfills'
 import vitePlugiCesium from 'vite-plugin-cesium'
 
-import wasm from "vite-plugin-wasm";
-import topLevelAwait from "vite-plugin-top-level-await";
+// import wasm from "vite-plugin-wasm";
+// import topLevelAwait from "vite-plugin-top-level-await";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [
     vue(),
-    wasm(),
-    topLevelAwait(),
+    // wasm(),
+    // topLevelAwait(),
     visualizer({// 图形化文件大小，方便观察
       emitFile: false,
       filename: 'stats.html',
@@ -110,8 +110,8 @@ export default defineConfig({
     // format: "es",
     plugins: () => {
       return [
-        wasm(),
-        topLevelAwait()
+        // wasm(),
+        // topLevelAwait()
       ]
     }
   },
