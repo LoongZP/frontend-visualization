@@ -13,20 +13,19 @@ import {
 // TODO
 // await InitializeCSG2Async(); 
 
-
 // import 'babylonjs-loaders';
 import { FBXLoader } from "../../lib/babylonjs-fbx-loader-master"
 // @ts-ignore
 SceneLoader.RegisterPlugin(new FBXLoader())
 import { CreateScene } from '../../lib/babylon-helper';
-import { verticesData1 } from "./webworker/data1.js";
 
-import { loaderCSG } from "./index.js";
-const mycsg = await loaderCSG()
+
+
+
+
 
 export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
   const scene = CreateScene(CanvasEl)
-
   // 添加一个相机，并绑定鼠标事件
   // 创建 ArcRotateCamera
   const camera = new ArcRotateCamera(
@@ -40,19 +39,6 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
   // 允许用户通过鼠标控制相机
   camera.attachControl(CanvasEl, true);
 
-
-  let model1 = getCSGModel(verticesData1)
-  let model2 = getCSGModel(verticesData1)
-
-
-  console.log(model1, model2);
-
-  console.time("msg")
-  let result=mycsg.Csgjs_subtract(model1, model2)
-  console.timeEnd("msg")
-  // console.log(result);
-  // console.log(result.indices.size());
-  // console.log(result.position.size());
 
 
   // const webworker=new Worker("./webworker/myworker.ts",{type: 'module'})
@@ -149,6 +135,22 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
   return scene;
 }
 
+
+
+
+
+// let model1 = getCSGModel(verticesData1)
+// let model2 = getCSGModel(verticesData1)
+
+
+// console.log(model1, model2);
+
+// console.time("msg")
+// let result=mycsg.Csgjs_subtract(model1, model2)
+// console.timeEnd("msg")
+// // console.log(result);
+// // console.log(result.indices.size());
+// // console.log(result.position.size());
 
 // function getCSGModel(verticesData) {
 //   let positions = verticesData.positions

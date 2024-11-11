@@ -16,7 +16,6 @@
     "@babylonjs/materials": "^7.32.0",
     "@esbuild-plugins/node-globals-polyfill": "^0.2.3",
     "@esbuild-plugins/node-modules-polyfill": "^0.2.2",
-    "@jscad/modeling": "^2.12.3",
     "babylonjs": "^7.32.0",
     "babylonjs-materials": "^7.32.0",
     "cesium": "^1.123.0",
