@@ -19,10 +19,9 @@ import { FBXLoader } from "../../lib/babylonjs-fbx-loader-master"
 // @ts-ignore
 SceneLoader.RegisterPlugin(new FBXLoader())
 import { CreateScene } from '../../lib/babylon-helper';
-import { verticesData1 } from "./webworker/data.js";
+import { verticesData1 } from "./webworker/data1.js";
 
-import { loaderCSG } from "./index";
-import * as loader from "../../lib/loader.js";
+import { loaderCSG } from "./index.js";
 const mycsg = await loaderCSG()
 
 export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
@@ -147,37 +146,36 @@ export async function TestFbxLoader(CanvasEl: HTMLCanvasElement) {
   //     })
   //   }
   // )
-  // delete mycsg
   return scene;
 }
 
 
-function getCSGModel(verticesData) {
-  let positions = verticesData.positions
-  let v_vertex = new mycsg.VectorCsgjsVertex()
-  for (let i = 0; i < positions.length; i += 3) {
-    let vertex = new mycsg.CsgjsVertex()
-    let p = [
-      positions[i],
-      positions[i + 1],
-      positions[i + 2],
-    ]
-    vertex.position = new mycsg.CsgjsVector(p[0], p[1], p[2]);
-    vertex.normal = new mycsg.CsgjsVector(0, 0, 0);
-    vertex.uv = new mycsg.CsgjsVector(0, 0, 0);
-    v_vertex.push_back(vertex)
-  }
-  console.log(v_vertex.size());
+// function getCSGModel(verticesData) {
+//   let positions = verticesData.positions
+//   let v_vertex = new mycsg.VectorCsgjsVertex()
+//   for (let i = 0; i < positions.length; i += 3) {
+//     let vertex = new mycsg.CsgjsVertex()
+//     let p = [
+//       positions[i],
+//       positions[i + 1],
+//       positions[i + 2],
+//     ]
+//     vertex.position = new mycsg.CsgjsVector(p[0], p[1], p[2]);
+//     vertex.normal = new mycsg.CsgjsVector();
+//     vertex.uv = new mycsg.CsgjsVector();
+//     v_vertex.push_back(vertex)
+//   }
+//   console.log(v_vertex.size());
 
-  let indices = verticesData.indices
-  let v_indices = new mycsg.VectorInt()
-  for (let i = 0; i < indices.length; i++) {
-    v_indices.push_back(indices[i])
-  }
-  console.log(v_indices.size());
+//   let indices = verticesData.indices
+//   let v_indices = new mycsg.VectorInt()
+//   for (let i = 0; i < indices.length; i++) {
+//     v_indices.push_back(indices[i])
+//   }
+//   console.log(v_indices.size());
 
-  let model = new mycsg.CsgjsModel()
-  model.vertices = v_vertex
-  model.indices = v_indices
-  return model
-}
+//   let model = new mycsg.CsgjsModel()
+//   model.vertices = v_vertex
+//   model.indices = v_indices
+//   return model
+// }
