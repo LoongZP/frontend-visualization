@@ -1,4 +1,4 @@
-import { Engine, Scene, MeshBuilder, StandardMaterial, Texture, CubeTexture, Color3 } from '@babylonjs/core'
+import { Engine, Scene, MeshBuilder, StandardMaterial, Texture, CubeTexture, Color3, ArcRotateCamera, Vector3, DirectionalLight } from '@babylonjs/core'
 import { Inspector } from '@babylonjs/inspector';
 import { AxesHelper } from "./AxesHelper";
 import { GridHelper } from "./GridHelper";
@@ -45,5 +45,26 @@ export function CreateScene(CanvasEl: HTMLCanvasElement) {
     window.addEventListener("resize", function () {
         engine.resize();
     });
+
+
+
+    // 添加一个相机，并绑定鼠标事件
+    // 创建 ArcRotateCamera
+    const camera = new ArcRotateCamera(
+        "camera",        // 相机名称
+        Math.PI / 2,      // α 角度 (绕Y轴旋转)
+        Math.PI / 4,      // β 角度 (绕X轴旋转)
+        50,               // 距离目标的半径
+        new Vector3(0, 0, 0), // 目标点 (围绕此点旋转)
+        scene             // 所属的场景
+    );
+    // 允许用户通过鼠标控制相机
+    camera.attachControl(CanvasEl, true);
+    // 添加光源到场景
+    let light = new DirectionalLight("DirectionalLight",
+        new Vector3(-1, -1, -1),
+        scene);
+    light.intensity = 5;  //调整平行光的强度
+
     return scene;
 }
