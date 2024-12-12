@@ -26,6 +26,7 @@
     "js-base64": "^3.7.7",
     "lil-gui": "^0.19.2",
     "pinia": "^2.2.2",
+    "promises-aplus-tests": "^2.1.2",
     "qs": "^6.13.0",
     "rollup-plugin-node-polyfills": "^0.2.1",
     "vite-plugin-cesium": "^1.2.23",
