@@ -105,6 +105,15 @@ export default defineConfig({
     // }),
   ],
 
+  // 设置scss的api类型为modern-compiler
+  css: {
+    preprocessorOptions: {
+      scss: {
+        api: 'modern-compiler'
+      }
+    }
+  },
+
   worker: {
     // Not needed with vite-plugin-top-level-await >= 1.3.0
     // format: "es",
@@ -125,11 +134,12 @@ export default defineConfig({
     rollupOptions: {
       plugins: [
       ],
-      // input: getEntryPath(),// 配置多页面
+      // 配置多页面
       input: {
+        mwebgl: './src/pages/mWebgl/index.html',
         // mbabylon: './src/pages/mbabylon/index.html',
-        post1: './src/pages/post1/index.html',
-        post2: './src/pages/post2/index.html',
+        // post1: './src/pages/post1/index.html',
+        // post2: './src/pages/post2/index.html',
       },
       output: {
         // assetFileNames: '[ext]/[name]-[hash].[ext]', //静态文件输出的文件夹名称
