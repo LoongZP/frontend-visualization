@@ -2,7 +2,7 @@
   "files": [],
   "ts-node": { "esm": true },
   "references": [
-    // tsconfig.node.json是专门用来配置vite.config.ts文件的编译规则，tsconfig.app.json则是用来定义项目中其他文件的ts编译规则。
+    // tsconfig.node.json是专门用来定义vite.config.ts配置文件的编译规则，tsconfig.app.json则是用来定义项目中其他文件的ts编译规则。
     {
       "path": "./tsconfig.app.json"
     },
