@@ -45,6 +45,7 @@ src/assets/*
 src/lib/*
 !src/lib/babylon-helper
 !src/lib/tiff2png
+!src/lib/obj2gltf
 
 !src/utils
 src/utils/*
