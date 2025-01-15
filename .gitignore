@@ -46,6 +46,7 @@ src/lib/*
 !src/lib/babylon-helper
 !src/lib/tiff2png
 !src/lib/obj2gltf
+!src/lib/fbx2glb
 
 !src/utils
 src/utils/*
