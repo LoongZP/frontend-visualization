@@ -31,6 +31,7 @@
     "echarts-gl": "^2.0.9",
     "frontend-visualization": "file:",
     "fs-extra": "^10.0.1",
+    "gltf-pipeline": "^4.1.0",
     "jpeg-js": "^0.4.4",
     "js-base64": "^3.7.7",
     "lil-gui": "^0.19.2",

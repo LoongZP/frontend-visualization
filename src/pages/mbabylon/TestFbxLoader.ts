@@ -1,5 +1,5 @@
 // import 'babylonjs-loaders';
-import { FBXLoader } from "../../lib/babylonjs-fbx-loader-master"
+import { FBXLoader } from "@/../lib/browser/babylonjs-fbx-loader-master"
 // @ts-ignore
 SceneLoader.RegisterPlugin(new FBXLoader())
 import { CreateScene } from '../../lib/babylon-helper';

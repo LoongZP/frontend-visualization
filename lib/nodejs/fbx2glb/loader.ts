@@ -4,8 +4,8 @@ import path from "path"
 import fs from "fs"
 import os from "os"
 import childProcess from "child_process";
-import {rimraf} from "rimraf"
-import { unique } from "@/utils/unique";
+import { rimraf } from "rimraf"
+import { unique } from "../../common/utils/unique";
 
 /**
  * Converts an FBX to a GTLF or GLB file.
@@ -16,7 +16,7 @@ import { unique } from "@/utils/unique";
  * @return Promise<string> a promise that yields the full path to the converted
  * file, an error on conversion failure.
  */
-function convert(srcFile: string, destFile: string, opts = []) {
+function convert(srcFile: string, destFile: string, opts: string[] = []) {
   return new Promise((resolve, reject) => {
     try {
       let binExt = os.type() === 'Windows_NT' ? '.exe' : '';
@@ -25,7 +25,7 @@ function convert(srcFile: string, destFile: string, opts = []) {
         throw new Error(`Unsupported OS: ${os.type()}`);
       }
 
-      let destExt:string;
+      let destExt: string;
       if (destFile.endsWith('.glb')) {
         destExt = '.glb';
         opts.includes('--binary') || opts.push('--binary');
@@ -54,7 +54,7 @@ function convert(srcFile: string, destFile: string, opts = []) {
         const onError = error =>
           error && console.warn(`Failed to delete ${fbmCruft}: ${error}`);
         try {
-          fs.existsSync(fbmCruft) && rimraf(fbmCruft, {}, onError);
+          fs.existsSync(fbmCruft) && rimraf(fbmCruft, {});
         } catch (error) {
           onError(error);
         }
@@ -77,7 +77,8 @@ export async function fbx2glb(srcFile: string) {
   const tempDir = os.tmpdir();
   const fileName = path.basename(srcFile.toLowerCase(), ".fbx") + unique(20) + ".glb";
   let tempFile = path.join(tempDir, fileName);
-  const options = []; //'--khr-materials-unlit'
+  const options: string[] = []; //'--khr-materials-unlit'
+  // @ts-ignore
   convert(srcFile, tempFile, options).then((tempFile: string) => { }, (error: string) => { console.error(error); });
   let glb = fs.readFileSync(tempFile);
   return glb;

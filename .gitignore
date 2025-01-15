@@ -25,6 +25,10 @@ dist-ssr
 dist
 node_modules
 
+# lib
+lib/browser/babylonjs-fbx-loader-master
+
+
 public/*
 !public/vite.svg
 
@@ -36,6 +40,7 @@ scripts/*
 
 # src
 src/*
+
 # TODO
 !src/assets
 src/assets/*
@@ -44,9 +49,6 @@ src/assets/*
 !src/lib
 src/lib/*
 !src/lib/babylon-helper
-!src/lib/tiff2png
-!src/lib/obj2gltf
-!src/lib/fbx2glb
 
 !src/utils
 src/utils/*
@@ -61,6 +63,10 @@ src/pages/*
 static/*
 !static/temp
 
+
+
+# test
 test
+test-lib
 
 stats.html
