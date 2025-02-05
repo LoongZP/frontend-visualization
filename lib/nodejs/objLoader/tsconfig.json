@@ -1,0 +1,36 @@
+{
+    "compilerOptions": {
+      "sourceMap": false,
+      "lib": [
+        "es2019",
+        "dom"
+      ],
+      "target": "es6",
+      "typeRoots": [
+        "./node_modules/*"
+      ],
+      "types": [
+        "node"
+      ],
+      "outDir": "dist",
+      "jsx": "react",
+      // "module": "commonjs",
+      // "resolveJsonModule": true,
+      "module": "ES2022",
+      "moduleResolution": "node",
+      "declaration": false,
+      "skipLibCheck": true,
+      "experimentalDecorators": true,
+      "strict": true,
+      "stripInternal": true,
+      "noImplicitAny": false,
+      "strictNullChecks": false,
+      "allowSyntheticDefaultImports":true
+    },
+    "exclude": [
+      "node_modules"
+    ],
+    "include": [
+      "./*"
+    ]
+  }
