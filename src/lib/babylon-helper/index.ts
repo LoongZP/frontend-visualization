@@ -61,10 +61,16 @@ export function CreateScene(CanvasEl: HTMLCanvasElement) {
     // 允许用户通过鼠标控制相机
     camera.attachControl(CanvasEl, true);
     // 添加光源到场景
-    let light = new DirectionalLight("DirectionalLight",
+    let light1 = new DirectionalLight("DirectionalLight1",
         new Vector3(-1, -1, -1),
         scene);
-    light.intensity = 5;  //调整平行光的强度
+    light1.intensity = 2;  //调整平行光的强度
+
+    // 添加光源到场景
+    let light2 = new DirectionalLight("DirectionalLight2",
+        new Vector3(1, -1, 1),
+        scene);
+    light2.intensity = 2;  //调整平行光的强度
 
     return scene;
 }
