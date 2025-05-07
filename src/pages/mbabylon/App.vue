@@ -24,8 +24,8 @@ onMounted(() => {
 }
 
 #renderCanvas {
-  width: 1080px;
-  height: 700px;
+  width: 920px;
+  height: 650px;
 }
 </style>
 <style>
@@ -40,5 +40,22 @@ onMounted(() => {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+}
+
+
+#scene-explorer-host ::-webkit-scrollbar {
+  display: none;
+}
+
+#sceneExplorer {
+  height: 624px !important;
+}
+
+#actionTabs .tabsMenu {
+  height: 624px;
+}
+
+#actionTabs .tabsMenu .panes ::-webkit-scrollbar {
+  display: none;
 }
 </style>
